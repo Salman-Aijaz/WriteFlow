@@ -10,7 +10,6 @@ const pool = new Pool({
 const getAllRoles = async () => {
   const query = 'SELECT id, role_name FROM roles'; // Replace `roles` with your table name
   const result = await pool.query(query);
-  console.log("RESULT--------->",result.rows)
   return result.rows; // Return the rows
 };
 
