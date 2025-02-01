@@ -7,7 +7,15 @@ const validateRegister = [
     .trim()
     .normalizeEmail()
     .isEmail()
-    .withMessage("Invalid email format"),
+    .withMessage("Invalid email format")
+    .custom((email) => {
+      const validTLDs = [".com", ".net", ".org", ".edu", ".gov", ".io"]; // Add more valid TLDs as needed
+      const domain = email.substring(email.lastIndexOf("."));
+      if (!validTLDs.includes(domain)) {
+        throw new Error("Invalid email domain");
+      }
+      return true;
+    }),
   body("password")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters long")
@@ -26,7 +34,15 @@ const validateRegister = [
 const validateLogin = [
   body("email")
     .isEmail()
-    .withMessage("Invalid email format"),
+    .withMessage("Invalid email format")
+    .custom((email) => {
+      const validTLDs = [".com", ".net", ".org", ".edu", ".gov", ".io"]; // Add more valid TLDs as needed
+      const domain = email.substring(email.lastIndexOf("."));
+      if (!validTLDs.includes(domain)) {
+        throw new Error("Invalid email domain");
+      }
+      return true;
+    }),
   body("password").notEmpty().withMessage("Password is required"),
 ];
 
@@ -34,7 +50,15 @@ const validateLogin = [
 const validateForgotPassword = [
   body("email")
     .isEmail()
-    .withMessage("Invalid email format"),
+    .withMessage("Invalid email format")
+    .custom((email) => {
+      const validTLDs = [".com", ".net", ".org", ".edu", ".gov", ".io"]; // Add more valid TLDs as needed
+      const domain = email.substring(email.lastIndexOf("."));
+      if (!validTLDs.includes(domain)) {
+        throw new Error("Invalid email domain");
+      }
+      return true;
+    }),
   body("new_password")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters long")
@@ -56,9 +80,4 @@ const validateRefreshToken = [
   body("token").notEmpty().withMessage("Token is required"),
 ];
 
-module.exports = {
-  validateRegister,
-  validateLogin,
-  validateForgotPassword,
-  validateRefreshToken,
-};
+export {validateRegister,validateLogin,validateForgotPassword,validateRefreshToken}
