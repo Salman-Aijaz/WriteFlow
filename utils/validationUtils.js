@@ -80,4 +80,4 @@ const validateRefreshToken = [
   body("token").notEmpty().withMessage("Token is required"),
 ];
 
-export {validateRegister,validateLogin,validateForgotPassword,validateRefreshToken}
+module.exports= {validateRegister,validateLogin,validateForgotPassword,validateRefreshToken}

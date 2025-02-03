@@ -1,10 +1,6 @@
-const { Pool } = require('pg'); // Import PostgreSQL client
-require('dotenv').config(); // Load environment variables
+const pool = require('../config/db');
 
 // Create a connection pool using the DATABASE_URL
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
 
 // Function to fetch all roles
 const getAllRoles = async () => {
