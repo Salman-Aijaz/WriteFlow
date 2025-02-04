@@ -28,7 +28,67 @@ const createArticleTable = async () => {
   }
 };
 
+const createLikeTable = async () => {
+  try {
+    const query = `
+    CREATE TABLE IF NOT EXISTS likes (
+     like_id SERIAL PRIMARY KEY,
+         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+             user_id INT REFERENCES users(id) ON DELETE CASCADE,
+                 article_id INT REFERENCES articles(article_id) ON DELETE CASCADE
+                 )
+    `;
+
+    await pool.query(query);
+    console.log("Like table created successfully.");
+  } catch (error) {
+    console.error("Error creating Like table:", error.message);
+    throw error;
+  }
+};
+
+const createShareTable = async () => {
+  try {
+    const query = `
+    CREATE TABLE IF NOT EXISTS shares (
+     share_id SERIAL PRIMARY KEY,
+         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+             user_id INT REFERENCES users(id) ON DELETE CASCADE,
+                 article_id INT REFERENCES articles(article_id) ON DELETE CASCADE
+                 )
+    `;
+
+    await pool.query(query);
+    console.log("Like table created successfully.");
+  } catch (error) {
+    console.error("Error creating Like table:", error.message);
+    throw error;
+  }
+};
+
+const createSaveTable = async () => {
+  try {
+    const query = `
+    CREATE TABLE IF NOT EXISTS likes (
+     save_id SERIAL PRIMARY KEY,
+         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+             user_id INT REFERENCES users(id) ON DELETE CASCADE,
+                 article_id INT REFERENCES articles(article_id) ON DELETE CASCADE
+                 )
+    `;
+
+    await pool.query(query);
+    console.log("Like table created successfully.");
+  } catch (error) {
+    console.error("Error creating Like table:", error.message);
+    throw error;
+  }
+};
+
+
 // Execute the function
 createArticleTable();
-
-module.exports = { createArticleTable };
+createLikeTable();
+createSaveTable();
+createShareTable();
+module.exports = { createArticleTable, createLikeTable,createSaveTable,createShareTable };
