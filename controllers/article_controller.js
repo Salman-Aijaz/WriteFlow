@@ -60,7 +60,51 @@ const getArticle = async (req, res) => {
   }
 };
 
+// Update Article
+const updateArticle = async (req, res) => {
+  const { article_id } = req.params;
+  const { title, content } = req.body;
+
+  try {
+    const updatedArticle = await Article.updateArticle(article_id, title, content);
+    
+    if (!updatedArticle) {
+      return res.status(404).json({ error: "Article not found" });
+    }
+
+    res.status(200).json({
+      message: "Article updated successfully",
+      article: updatedArticle
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: "Error updating article" });
+    console.log("ERROR-------->",error)
+  }
+};
+
+// Delete Article
+const deleteArticle = async (req, res) => {
+  const { article_id } = req.params;
+
+  try {
+    const deleted = await Article.deleteArticle(article_id);
+    
+    if (!deleted) {
+      return res.status(404).json({ error: "Article not found" });
+    }
+
+    res.status(200).json({ message: "Article deleted successfully" });
+
+  } catch (error) {
+    res.status(500).json({ error: "Error deleting article" });
+  }
+};
+
+
 module.exports = {
   createPost,
-  getArticle
+  getArticle,
+  updateArticle,
+  deleteArticle
 };

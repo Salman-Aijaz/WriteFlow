@@ -53,7 +53,41 @@ const getArticleById = async (article_id) => {
 };
 
 
+const updateArticle = async (article_id, title, content) => {
+  const query = `
+    UPDATE articles 
+    SET title = $1, content = $2, updated_at = NOW()
+    WHERE article_id = $3
+    RETURNING *;
+  `;
+
+  try {
+    const result = await pool.query(query, [title, content, article_id]);
+    if (result.rows.length === 0) {
+      return null;
+    }
+    return result.rows[0];
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+const deleteArticle = async (article_id) => {
+  const query = `
+    DELETE FROM articles WHERE article_id = $1 RETURNING *;
+  `;
+
+  try {
+    const result = await pool.query(query, [article_id]);
+    return result.rows.length > 0;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 module.exports = {
   createArticle,
-  getArticleById
+  getArticleById,
+  updateArticle,
+  deleteArticle
 };
