@@ -33,7 +33,7 @@ describe('User Controller', () => {
       await register(req, res, next);
 
       expect(res.statusCode).toBe(201);
-      expect(res._getData()).toEqual({
+      expect(JSON.parse(res._getData())).toEqual({
         success: true,
         message: 'User John Doe is successfully registered',
       });
@@ -53,7 +53,7 @@ describe('User Controller', () => {
       await register(req, res, next);
 
       expect(res.statusCode).toBe(400);
-      expect(res._getData()).toEqual({
+      expect(JSON.parse(res._getData())).toEqual({
         success: false,
         message: 'Email already exists',
       });
@@ -73,7 +73,7 @@ describe('User Controller', () => {
       await register(req, res, next);
 
       expect(res.statusCode).toBe(500);
-      expect(res._getData()).toEqual({
+      expect(JSON.parse(res._getData())).toEqual({
         success: false,
         message: 'Error registering user',
       });

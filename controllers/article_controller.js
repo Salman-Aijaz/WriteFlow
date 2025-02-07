@@ -56,7 +56,7 @@ const getArticle = async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ error: "Error fetching article" });
-    console.log("ERROR--------------->",error)
+    console.log("ERROR--------------->", error);
   }
 };
 
@@ -79,7 +79,7 @@ const updateArticle = async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ error: "Error updating article" });
-    console.log("ERROR-------->",error)
+    console.log("ERROR-------->", error);
   }
 };
 
@@ -100,7 +100,6 @@ const deleteArticle = async (req, res) => {
     res.status(500).json({ error: "Error deleting article" });
   }
 };
-
 
 module.exports = {
   createPost,
