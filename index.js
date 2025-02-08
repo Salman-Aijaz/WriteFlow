@@ -4,6 +4,8 @@ const cors = require("cors");
 const roleRoutes = require('./routes/roleRoutes');
 const user_routes = require('./routes/user_routes')
 const article_routes=require("./routes/article_routes")
+const comment_routes=require("./routes/comment_routes")
+
 // Load environment variables
 dotenv.config();
 
@@ -20,6 +22,7 @@ app.use(express.json());
 app.use('/api', roleRoutes);
 app.use('/user', user_routes);
 app.use('/article', article_routes);
+app.use('/comment', comment_routes);
 
 
 // Start the server

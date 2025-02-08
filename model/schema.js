@@ -85,10 +85,36 @@ const createSaveTable = async () => {
   }
 };
 
+const createCommentTable = async () => {
+  try {
+    const query = `
+    CREATE TABLE IF NOT EXISTS comments (
+    comment_id SERIAL PRIMARY KEY,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            user_id INT REFERENCES users(id) ON DELETE CASCADE,
+                article_id INT REFERENCES articles(article_id) ON DELETE CASCADE,
+                    comment TEXT NOT NULL
+                    )
+    `;
+
+    await pool.query(query);
+    console.log("Like table created successfully.");
+  } catch (error) {
+    console.error("Error creating Like table:", error.message);
+    throw error;
+  }
+};
 
 // Execute the function
 createArticleTable();
 createLikeTable();
 createSaveTable();
 createShareTable();
-module.exports = { createArticleTable, createLikeTable,createSaveTable,createShareTable };
+createCommentTable();
+module.exports = {
+  createArticleTable,
+  createLikeTable,
+  createSaveTable,
+  createShareTable,
+  createCommentTable,
+};
