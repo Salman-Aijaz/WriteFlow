@@ -13,6 +13,36 @@ const createComment = async (user_id, article_id, comment) => {
   }
 };
 
+const getCommentById = async (comment_id) => {
+  const query = `
+    SELECT 
+    c.comment_id, 
+    c.created_at, 
+    c.user_id, 
+    c.article_id, 
+    c.comment,
+    COALESCE(
+        json_agg(
+            json_build_object(
+                'reply_id', COALESCE(r.reply_id, 0),
+                'reply', COALESCE(r.reply, '')
+            )
+        ) FILTER (WHERE r.reply_id IS NOT NULL), '[]'
+    ) AS reply
+FROM comments c
+LEFT JOIN reply r ON c.comment_id = r.comment_id
+WHERE c.comment_id = $1
+GROUP BY c.comment_id;
+  `;
+
+  try {
+    const result = await pool.query(query, [comment_id]);
+    return result.rows.length > 0 ? result.rows[0] : null;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 const updateComment = async (comment_id, comment) => {
   const query = `
     UPDATE comments 
@@ -46,5 +76,9 @@ const deleteComment = async (comment_id) => {
   }
 };
 
-
-module.exports = { createComment,updateComment,deleteComment };
+module.exports = {
+  createComment,
+  getCommentById,
+  updateComment,
+  deleteComment,
+};

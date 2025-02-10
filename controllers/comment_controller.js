@@ -20,6 +20,23 @@ const createComment = async (req, res) => {
   }
 };
 
+const getCommentById = async (req, res) => {
+  const { comment_id } = req.params;
+  console.log("Fetching Comment ID---->", comment_id);
+
+  try {
+    const comment = await Comment.getCommentById(comment_id);
+    if (!comment) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+    res.status(200).json(comment);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching comment" });
+    console.log("Error--->", error);
+  }
+};
+
+
 const updateComment = async (req, res) => {
   const { comment_id, comment } = req.body;
   console.log("Updating Comment---->", req.body);
@@ -59,4 +76,4 @@ const deleteComment = async (req, res) => {
 };
 
 
-module.exports = { createComment,updateComment,deleteComment };
+module.exports = { createComment,getCommentById, updateComment,deleteComment };
