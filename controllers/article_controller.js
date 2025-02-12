@@ -65,6 +65,10 @@ const updateArticle = async (req, res) => {
   const { article_id } = req.params;
   const { title, content } = req.body;
 
+  if (!title && !content) {
+    return res.status(400).json({ error: "At least one field (title or content) must be provided" });
+  }
+
   try {
     const updatedArticle = await Article.updateArticle(article_id, title, content);
     

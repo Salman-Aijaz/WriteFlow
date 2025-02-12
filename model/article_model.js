@@ -52,17 +52,33 @@ const getArticleById = async (article_id) => {
   }
 };
 
-
 const updateArticle = async (article_id, title, content) => {
-  const query = `
-    UPDATE articles 
-    SET title = $1, content = $2, updated_at = NOW()
-    WHERE article_id = $3
-    RETURNING *;
-  `;
+  let query = `UPDATE articles SET `;
+  let values = [];
+  let count = 1;
+
+  if (title) {
+    query += `title = $${count}, `;
+    values.push(title);
+    count++;
+  }
+
+  if (content) {
+    query += `content = $${count}, `;
+    values.push(content);
+    count++;
+  }
+
+  // Ensure at least one field is updated
+  if (values.length === 0) {
+    throw new Error("No valid fields to update");
+  }
+
+  query += `updated_at = NOW() WHERE article_id = $${count} RETURNING *;`;
+  values.push(article_id);
 
   try {
-    const result = await pool.query(query, [title, content, article_id]);
+    const result = await pool.query(query, values);
     if (result.rows.length === 0) {
       return null;
     }
