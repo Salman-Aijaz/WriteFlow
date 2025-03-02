@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
 
-
 // Function to register a new user
 const registerUser = async (name, email, password, role_id) => {
     try {
@@ -37,6 +36,22 @@ const updateUserPassword = async (email, newPassword) => {
     throw error;
   }
 };
-  
-module.exports = { registerUser,findUserByEmail,updateUserPassword };
+
+const getUserById = async (user_id) => {
+  try {
+    const result = await pool.query("SELECT name FROM users WHERE id = $1", [user_id]);
+    
+    if (result.rows.length === 0) {
+      return null; // No user found
+    }
+
+    return result.rows[0]; // Return the user object
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
+};
+
+
+module.exports = { registerUser,findUserByEmail,updateUserPassword,getUserById };
   
